@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, CheckCircle, Clock, FileText, Sparkles, TrendingUp, Users, Award, Eye, Calendar, User, ArrowRight, X, UserCheck, Sliders, Trophy, Zap, Globe, Lightbulb, DollarSign, MapPin, HelpCircle } from 'lucide-react';
+import { Briefcase, CheckCircle, Clock, FileText, Sparkles, TrendingUp, Users, Award, Eye, Calendar, User, ArrowRight, X, UserCheck, Sliders, Trophy, Zap, Globe, Lightbulb, DollarSign, MapPin, HelpCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Job, Candidate, Application } from '../types';
+import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { Job, Candidate, Application, ResumeAnalysisResult } from '../types';
 import { sampleCandidates } from '../data';
+import CareerPathSimulator from './CareerPathSimulator';
 
 interface DashboardProps {
   role: 'seeker' | 'employer';
@@ -11,6 +13,8 @@ interface DashboardProps {
   invitedCandidates: Candidate[];
   onUpdateAppStatus: (appId: string, nextStatus: Application['status']) => void;
   onPostNewJob: (job: Omit<Job, 'id' | 'postedAt'>) => void;
+  resumeAnalysis?: ResumeAnalysisResult | null;
+  onNavigateToTab?: (tab: 'home' | 'analyzer' | 'jobs' | 'dashboard' | 'contact') => void;
 }
 
 export default function Dashboard({
@@ -19,7 +23,9 @@ export default function Dashboard({
   applications,
   invitedCandidates,
   onUpdateAppStatus,
-  onPostNewJob
+  onPostNewJob,
+  resumeAnalysis,
+  onNavigateToTab
 }: DashboardProps) {
   
   // Job Posting Modal State
@@ -36,7 +42,7 @@ export default function Dashboard({
 
   // Seeker Editable Profile State
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-  const [activeSeekerTab, setActiveSeekerTab] = useState<'overview' | 'settings' | 'salary'>('overview');
+  const [activeSeekerTab, setActiveSeekerTab] = useState<'overview' | 'settings' | 'salary' | 'simulator'>('overview');
   const [profile, setProfile] = useState({
     name: 'Sarah Jenkins',
     title: 'Lead Frontend Architect',
@@ -418,7 +424,7 @@ export default function Dashboard({
           <div className="lg:col-span-8 space-y-6">
             
             {/* Seeker Tab Switcher */}
-            <div className="flex p-1 bg-white/[0.02] border border-white/5 rounded-2xl max-w-lg mb-6">
+            <div className="flex p-1 bg-white/[0.02] border border-white/5 rounded-2xl max-w-2xl mb-6">
               <button
                 type="button"
                 onClick={() => setActiveSeekerTab('overview')}
@@ -453,6 +459,18 @@ export default function Dashboard({
               >
                 <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Salary Benchmark</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveSeekerTab('simulator')}
+                className={`flex-1 py-1.5 px-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
+                  activeSeekerTab === 'simulator'
+                    ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+                    : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
+                }`}
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Career Simulator</span>
               </button>
             </div>
 
@@ -1050,11 +1068,137 @@ export default function Dashboard({
                 </div>
               );
             })()}
+
+            {activeSeekerTab === 'simulator' && (
+              <CareerPathSimulator 
+                resumeAnalysis={resumeAnalysis} 
+                profile={profile} 
+              />
+            )}
           </div>
 
           {/* RHS Panels for seek progress indicators */}
           <div className="lg:col-span-4 space-y-6">
             
+            {/* NEW VISUAL RESUME HEALTH GAUGE */}
+            {(() => {
+              const score = resumeAnalysis ? resumeAnalysis.overallScore : 92;
+              return (
+                <div className="bg-[#0b1220]/60 backdrop-blur-md rounded-2xl p-5 border border-white/10 space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-brand-primary/5 rounded-full blur-2xl"></div>
+                  
+                  <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
+                    <span className="text-xs text-brand-muted uppercase font-mono tracking-wider">AI Resume Health Index</span>
+                    <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full ${
+                      score >= 90
+                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                        : score >= 80
+                          ? 'bg-indigo-500/10 text-brand-primary border border-indigo-500/20'
+                          : 'bg-amber-500/10 text-brand-warning border border-amber-500/20'
+                    }`}>
+                      {score >= 90 ? 'ATS Compatible: Elite' : score >= 80 ? 'Compatible: Highly Competent' : 'Action Draft Required'}
+                    </span>
+                  </div>
+
+                  <div className="relative pt-2">
+                    <div className="h-32 flex items-center justify-center relative overflow-hidden">
+                      <ResponsiveContainer width="100%" height={160}>
+                        <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+                          <defs>
+                            <linearGradient id="resumeGaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#8B5CF6" /> {/* purple-500 */}
+                              <stop offset="50%" stopColor="#3B82F6" /> {/* blue-500 */}
+                              <stop offset="100%" stopColor="#10B981" /> {/* emerald-500 */}
+                            </linearGradient>
+                          </defs>
+                          <Pie
+                            data={[
+                              { value: score, fill: 'url(#resumeGaugeGradient)' },
+                              { value: 100 - score, fill: 'rgba(255, 255, 255, 0.05)' }
+                            ]}
+                            cx="50%"
+                            cy={110}
+                            startAngle={180}
+                            endAngle={0}
+                            innerRadius={60}
+                            outerRadius={80}
+                            dataKey="value"
+                            stroke="none"
+                          >
+                            <Cell key="cell-0" fill="url(#resumeGaugeGradient)" />
+                            <Cell key="cell-1" fill="rgba(255, 255, 255, 0.05)" />
+                          </Pie>
+                        </PieChart>
+                      </ResponsiveContainer>
+
+                      {/* Absolute Center Text */}
+                      <div className="absolute top-[48px] left-0 right-0 text-center flex flex-col items-center">
+                        <span className="text-3xl font-extrabold font-mono text-white tracking-tight leading-none">
+                          {score > 0 ? `${score}` : 'N/A'}
+                        </span>
+                        <span className="text-[9px] text-brand-muted uppercase tracking-wider font-mono mt-1">
+                          ATS Quality Rating
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Gauge Status Limits */}
+                    <div className="flex justify-between text-[9px] font-mono text-brand-muted px-2 -mt-4 pb-2 border-b border-white/5">
+                      <span>ATS Floor (60)</span>
+                      <span>Perfect Match (100)</span>
+                    </div>
+                  </div>
+
+                  {/* Status Brief Summary */}
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-2.5 bg-white/[0.02] border border-white/5 p-3 rounded-xl">
+                      {score >= 90 ? (
+                        <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      ) : score >= 80 ? (
+                        <Sparkles className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                      ) : (
+                        <AlertCircle className="w-4 h-4 text-brand-warning shrink-0 mt-0.5" />
+                      )}
+                      <div className="space-y-0.5">
+                        <h5 className="text-[11px] font-bold text-white leading-snug">
+                          {score >= 90 ? 'Executive Standard Approved' : score >= 80 ? 'Minor Enhancements Pending' : 'Substandard Keyword Weights'}
+                        </h5>
+                        <p className="text-[10px] text-brand-muted leading-relaxed">
+                          {resumeAnalysis?.feedback || 'Please run a file upload analysis in career operations for real-time compliance results.'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tactical actions suggestion */}
+                    {resumeAnalysis && resumeAnalysis.missingSkills.length > 0 && (
+                      <div className="text-[10px] text-brand-muted space-y-1 bg-white/[0.01] p-2.5 rounded-xl border border-white/5">
+                        <span className="text-[8px] uppercase tracking-wider font-mono font-bold text-brand-secondary block">
+                          Priority Target Keywords to Inject:
+                        </span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {resumeAnalysis.missingSkills.map((sk, idx) => (
+                            <span key={idx} className="text-[9px] font-mono px-2 py-0.5 bg-brand-secondary/10 border border-brand-secondary/25 text-brand-secondary rounded">
+                              {sk}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Navigation Button */}
+                    <button
+                      type="button"
+                      onClick={() => onNavigateToTab?.('analyzer')}
+                      className="w-full py-2 bg-gradient-to-r from-brand-primary/25 to-brand-secondary/25 hover:from-brand-primary/35 hover:to-brand-secondary/35 border border-brand-secondary/35 hover:border-brand-secondary/50 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-[0.98]"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                      Open Full AI Analyzer Studio
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* PROFILE COMPLETION BLUEPRINT CARD */}
             <div className="bg-[#0b1220]/60 backdrop-blur-md rounded-2xl p-5 border border-white/10 space-y-5 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-24 h-24 bg-brand-primary/5 rounded-full blur-2xl"></div>

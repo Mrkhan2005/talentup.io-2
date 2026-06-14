@@ -4,7 +4,7 @@ import {
   ChevronRight, ArrowRight, ShieldCheck, Check, Info, User, Lock, Mail, 
   X, RefreshCw, LogIn, Plus, LogOut, CheckCircle, Award
 } from 'lucide-react';
-import { User as UserType, Job, Company, Candidate, Application, Notification } from './types';
+import { User as UserType, Job, Company, Candidate, Application, Notification, ResumeAnalysisResult } from './types';
 import { sampleJobs, sampleCompanies, sampleCandidates } from './data';
 
 // Modular Sub-components
@@ -12,10 +12,11 @@ import AIPanel from './components/AIPanel';
 import JobSearch from './components/JobSearch';
 import Dashboard from './components/Dashboard';
 import LegalContact from './components/LegalContact';
+import Apply4UAgent from './components/Apply4UAgent';
 
 export default function App() {
   // Navigation State
-  const [activeTab, setActiveTab] = useState<'home' | 'analyzer' | 'jobs' | 'dashboard' | 'contact'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'analyzer' | 'jobs' | 'dashboard' | 'contact' | 'apply4u'>('home');
   
   // Auth state defaults to Sarah Jenkins (Seeker) for instant high fidelity data
   const [user, setUser] = useState<UserType | null>({
@@ -24,6 +25,28 @@ export default function App() {
     name: 'Sarah Jenkins',
     role: 'seeker',
     avatarUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150&h=150'
+  });
+
+  // Global Resume Analysis State
+  const [resumeAnalysis, setResumeAnalysis] = useState<ResumeAnalysisResult | null>({
+    overallScore: 92,
+    atsScore: 94,
+    formattingScore: 90,
+    keywordMatchScore: 89,
+    readabilityScore: 95,
+    professionalImpactScore: 92,
+    feedback: "Your resume demonstrates exceptional alignment with senior frontend/AI architectures, displaying crisp phrasing and highly actionable quantitative indicators.",
+    missingSkills: ["Docker & Kubernetes", "System Design", "Kubeflow"],
+    strengths: [
+      "Excellent quantitative achievements and business outcomes cited",
+      "Robust core technical credentials matching senior expectations",
+      "Perfect ATS format structure and font hierarchies"
+    ],
+    recommendations: [
+      "Integrate missing system design benchmarks to push for a perfect 100",
+      "Incorporate precise machine learning serving framework callouts",
+      "Structure bio with a highly focused executive profile anchor"
+    ]
   });
 
   // Login Form States
@@ -340,6 +363,15 @@ export default function App() {
           >
             AI Consulting
           </button>
+          <button 
+            onClick={() => setActiveTab('apply4u')} 
+            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all flex items-center gap-1 ${
+              activeTab === 'apply4u' ? 'liquid-nav-btn-active font-extrabold' : 'liquid-nav-btn text-brand-muted hover:text-white'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+            Smart Apply
+          </button>
           {user && (
             <button 
               onClick={() => setActiveTab('dashboard')} 
@@ -624,6 +656,55 @@ export default function App() {
                   </div>
                 </div>
               </div>
+
+              {/* APPLY4U AUTOMATION INTEGRATED SPOTLIGHT CARD */}
+              <div className="bg-gradient-to-r from-[#170F2C]/70 via-[#0C1221]/80 to-[#101F2F]/70 border border-brand-primary/20 p-8 rounded-3xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 backdrop-blur-xl">
+                <div className="absolute top-0 right-0 w-44 h-44 bg-brand-primary/15 rounded-full blur-3xl"></div>
+                
+                <div className="space-y-4 max-w-xl text-left">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-gradient-to-r from-brand-primary/20 to-brand-secondary/20 border border-brand-primary/30 rounded-full text-[9px] font-mono font-bold text-white uppercase tracking-wider">
+                    <Sparkles className="w-3 h-3 text-cyan-400 shrink-0" />
+                    APPLY4U INTEGRATED ENGINE
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
+                    Don’t Search For Jobs. <br/>Let Us Apply <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#10B981]">On Your Behalf</span>.
+                  </h3>
+                  <p className="text-xs text-brand-muted leading-relaxed">
+                    Tired of repetitive resumes uploads and 50-step question sets? Meet our deep-seated automation assistant. We analyze, optimize your structure, and submit directly to our partner network automatically.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px] font-medium text-brand-muted font-sans">
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Restructures CV Into Vetted Formats
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Automatically Target Title & Location
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> 24/7 Background Submission Sprints
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Real-time Tracking & Interview Alerting
+                    </div>
+                  </div>
+                </div>
+
+                <div className="shrink-0 flex flex-col items-center gap-3 bg-[#050816]/50 border border-white/5 p-6 rounded-2xl min-w-[260px]">
+                  <div className="text-center">
+                    <span className="text-[9px] uppercase font-mono tracking-wider text-brand-muted font-bold block">Estimated SLA Match Lift</span>
+                    <span className="text-4xl font-extrabold text-emerald-400 font-mono tracking-tight block mt-0.5">3.4x</span>
+                    <span className="text-[10px] text-brand-muted mt-1 block">Accelerated application cycle</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('apply4u')}
+                    className="w-full mt-2 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-95 text-white font-sans font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-brand-primary/15 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                  >
+                    Activate Smart Apply Now <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
             </section>
 
             {/* TESTIMONIALS CAROUSEL */}
@@ -661,7 +742,11 @@ export default function App() {
 
         {/* 2. AI MOLECULAR ANALYZER */}
         {activeTab === 'analyzer' && (
-          <AIPanel onNotify={handleAddNewNotification} />
+          <AIPanel 
+            onNotify={handleAddNewNotification} 
+            resumeAnalysis={resumeAnalysis}
+            onUpdateResumeAnalysis={setResumeAnalysis}
+          />
         )}
 
         {/* 3. SEARCH DIRECTORY & CONTRACT SERVICES */}
@@ -684,6 +769,18 @@ export default function App() {
             invitedCandidates={invitedCandidatesList}
             onUpdateAppStatus={handleUpdateAppStatus}
             onPostNewJob={handlePostNewJob}
+            resumeAnalysis={resumeAnalysis}
+            onNavigateToTab={setActiveTab}
+          />
+        )}
+
+        {/* SMART APPLY4U AUTO-AGENT SERVICE */}
+        {activeTab === 'apply4u' && (
+          <Apply4UAgent 
+            resumeAnalysis={resumeAnalysis}
+            onNotify={handleAddNewNotification}
+            onApplyToJob={handleJobApply}
+            onNavigateToTab={setActiveTab}
           />
         )}
 
