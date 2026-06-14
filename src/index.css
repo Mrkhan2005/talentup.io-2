@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Custom brand design tokens for TalentUp - gorgeous, modern dark interface */
-  --color-brand-bg: #030712;         /* Deep rich charcoal/onyx */
-  --color-brand-card: #090e1a;       /* Saturated dark blueprint card */
-  --color-brand-elevated: #111827;   /* Elevated dark container bg */
-  --color-brand-primary: #3b82f6;     /* Vibrant sky blue (Lead branding) */
-  --color-brand-secondary: #8b5cf6;   /* Rich purple/violet (AI accent) */
-  --color-brand-success: #10b981;     /* Crisp emerald-500 (ATS / perfect success) */
-  --color-brand-warning: #f59e0b;     /* Bright amber-500 (Alerts / modifications) */
+  /* Custom brand design tokens for TalentUp - gorgeous, modern dark liquid interface */
+  --color-brand-bg: #030409;         /* Ultra-deep liquid background */
+  --color-brand-card: rgba(10, 16, 32, 0.4); /* Frosted Glass Layer Base */
+  --color-brand-elevated: rgba(18, 26, 48, 0.65);
+  --color-brand-primary: #6366f1;     /* Royal Indigo */
+  --color-brand-secondary: #d946ef;   /* Radiant Orchid/Pink */
+  --color-brand-success: #10b981;     /* Crisp emerald-500 */
+  --color-brand-warning: #f59e0b;     /* Bright amber-500 */
   --color-brand-muted: #9ca3af;       /* Neutral readable grey */
 }
 
@@ -23,25 +23,144 @@
     background-color: var(--color-brand-bg);
     color: #ffffff;
     font-family: var(--font-sans);
+    overflow-x: hidden;
   }
 }
 
-/* Custom styled modern frosted glass panels */
+/* 1. DYNAMIC LIQUID KEYFRAME ANIMATIONS */
+@keyframes liquid-wobble {
+  0% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: translate(0px, 0px) rotate(0deg) scale(1);
+  }
+  33% {
+    border-radius: 70% 30% 52% 48% / 60% 40% 60% 40%;
+    transform: translate(60px, -80px) rotate(120deg) scale(1.15);
+  }
+  66% {
+    border-radius: 28% 72% 37% 63% / 40% 60% 40% 60%;
+    transform: translate(-50px, 60px) rotate(240deg) scale(0.9);
+  }
+  100% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: translate(0px, 0px) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes liquid-wobble-delayed {
+  0% {
+    border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%;
+    transform: translate(0px, 0px) rotate(0deg) scale(1);
+  }
+  33% {
+    border-radius: 30% 70% 70% 30% / 50% 30% 70% 50%;
+    transform: translate(-60px, 50px) rotate(-120deg) scale(0.85);
+  }
+  66% {
+    border-radius: 70% 30% 40% 60% / 60% 50% 50% 40%;
+    transform: translate(80px, -70px) rotate(-240deg) scale(1.1);
+  }
+  100% {
+    border-radius: 50% 50% 30% 70% / 50% 60% 40% 50%;
+    transform: translate(0px, 0px) rotate(-360deg) scale(1);
+  }
+}
+
+@keyframes liquid-morph {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 30% / 50% 60% 30% 50%;
+  }
+}
+
+.animate-liquid-wobble {
+  animation: liquid-wobble 24s infinite ease-in-out;
+}
+
+.animate-liquid-wobble-delayed {
+  animation: liquid-wobble-delayed 28s infinite ease-in-out;
+}
+
+.animate-liquid-morph {
+  animation: liquid-morph 12s infinite ease-in-out;
+}
+
+/* 2. LIQUID GLASSMORPHISM BOOTSTRAPPING */
 .glass-panel {
-  background: rgba(9, 14, 26, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(10, 15, 30, 0.45);
+  backdrop-filter: blur(22px) saturate(190%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              background 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(14, 21, 42, 0.55);
+  box-shadow: 
+    0 15px 50px rgba(0, 0, 0, 0.6),
+    inset 0 1px 3px rgba(255, 255, 255, 0.25),
+    0 0 25px rgba(99, 102, 241, 0.15);
+}
+
+/* Slick liquid glass navigation button style */
+.liquid-nav-btn {
+  position: relative;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liquid-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+.liquid-nav-btn-active {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.35) 0%, rgba(217, 70, 239, 0.35) 100%);
+  border-color: rgba(217, 70, 239, 0.4);
+  color: white;
+  box-shadow: 
+    0 0 20px rgba(217, 70, 239, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.25);
+}
+
+/* Modern inputs mimicking glowing liquid indices */
+.glass-input {
+  background: rgba(3, 4, 9, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-sans);
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(10, 16, 32, 0.75);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  outline: none;
 }
 
 /* Custom scrollbar behaviors */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.01);
   border-radius: 999px;
 }
 
@@ -51,5 +170,5 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--color-brand-primary);
+  background: linear-gradient(180deg, var(--color-brand-primary), var(--color-brand-secondary));
 }

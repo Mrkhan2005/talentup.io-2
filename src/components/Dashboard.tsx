@@ -418,47 +418,41 @@ export default function Dashboard({
           <div className="lg:col-span-8 space-y-6">
             
             {/* Seeker Tab Switcher */}
-            <div className="flex items-center gap-4 border-b border-white/5 pb-1 mb-2">
+            <div className="flex p-1 bg-white/[0.02] border border-white/5 rounded-2xl max-w-lg mb-6">
               <button
+                type="button"
                 onClick={() => setActiveSeekerTab('overview')}
-                className={`pb-3 px-1 text-xs font-semibold uppercase tracking-wider relative transition-all duration-300 ${
+                className={`flex-1 py-2 px-3 text-xs font-bold rounded-xl transition-all ${
                   activeSeekerTab === 'overview'
-                    ? 'text-brand-primary'
-                    : 'text-brand-muted hover:text-white'
+                    ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+                    : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 <span>Overview Pipeline</span>
-                {activeSeekerTab === 'overview' && (
-                  <motion.div layoutId="seekerActiveLine" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full" />
-                )}
               </button>
               <button
+                type="button"
                 onClick={() => setActiveSeekerTab('settings')}
-                className={`pb-3 px-1 text-xs font-semibold uppercase tracking-wider relative transition-all duration-300 flex items-center gap-1.5 ${
+                className={`flex-1 py-1.5 px-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                   activeSeekerTab === 'settings'
-                    ? 'text-brand-primary'
-                    : 'text-brand-muted hover:text-white'
+                    ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+                    : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 <Sliders className="w-3.5 h-3.5" />
                 <span>Profile Settings</span>
-                {activeSeekerTab === 'settings' && (
-                  <motion.div layoutId="seekerActiveLine" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full" />
-                )}
               </button>
               <button
+                type="button"
                 onClick={() => setActiveSeekerTab('salary')}
-                className={`pb-3 px-1 text-xs font-semibold uppercase tracking-wider relative transition-all duration-300 flex items-center gap-1.5 ${
+                className={`flex-1 py-1.5 px-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 ${
                   activeSeekerTab === 'salary'
-                    ? 'text-brand-primary'
-                    : 'text-brand-muted hover:text-white'
+                    ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+                    : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
                 }`}
               >
                 <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Salary Benchmark</span>
-                {activeSeekerTab === 'salary' && (
-                  <motion.div layoutId="seekerActiveLine" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary rounded-full" />
-                )}
               </button>
             </div>
 

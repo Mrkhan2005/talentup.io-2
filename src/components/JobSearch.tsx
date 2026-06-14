@@ -84,30 +84,36 @@ export default function JobSearch({
   return (
     <div className="space-y-8 pb-16">
       {/* Sub tabs navigation */}
-      <div className="flex border-b border-white/10 max-w-md">
+      <div className="flex p-1 bg-white/[0.02] border border-white/5 rounded-2xl max-w-lg">
         <button
           onClick={() => setSubTab('jobs')}
-          className={`flex-1 pb-3 text-sm font-semibold border-b-2 transition-all ${
-            subTab === 'jobs' ? 'border-brand-primary text-white' : 'border-transparent text-brand-muted hover:text-white'
+          className={`flex-1 py-2.5 px-4 text-xs font-bold rounded-xl transition-all ${
+            subTab === 'jobs' 
+              ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+              : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
           }`}
         >
-          🔍 Jobs Discovery ({filteredJobs.length})
+          🔍 Jobs ({filteredJobs.length})
         </button>
         <button
           onClick={() => setSubTab('companies')}
-          className={`flex-1 pb-3 text-sm font-semibold border-b-2 transition-all ${
-            subTab === 'companies' ? 'border-brand-primary text-white' : 'border-transparent text-brand-muted hover:text-white'
+          className={`flex-1 py-2.5 px-4 text-xs font-bold rounded-xl transition-all ${
+            subTab === 'companies' 
+              ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+              : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
           }`}
         >
-          🏢 Tech Directory
+          🏢 Companies
         </button>
         <button
           onClick={() => setSubTab('talents')}
-          className={`flex-1 pb-3 text-sm font-semibold border-b-2 transition-all ${
-            subTab === 'talents' ? 'border-brand-primary text-white' : 'border-transparent text-brand-muted hover:text-white'
+          className={`flex-1 py-2.5 px-4 text-xs font-bold rounded-xl transition-all ${
+            subTab === 'talents' 
+              ? 'bg-gradient-to-r from-brand-primary/30 to-brand-secondary/30 text-white border border-brand-secondary/30 shadow-lg shadow-brand-primary/10' 
+              : 'text-brand-muted hover:text-white hover:bg-white/[0.04]'
           }`}
         >
-          ✨ Talent Marketplace
+          ✨ Talents
         </button>
       </div>
 

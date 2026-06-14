@@ -286,58 +286,75 @@ export default function App() {
   return (
     <div className="min-h-screen bg-brand-bg text-white font-sans flex flex-col justify-between selection:bg-brand-primary selection:text-white relative">
       
-      {/* BACKGROUND DECORATIVE GLOW SPHERES */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 overflow-hidden z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[50%] bg-brand-primary/10 rounded-full blur-[140px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[60%] bg-brand-secondary/15 rounded-full blur-[180px]"></div>
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[35%] h-[35%] bg-brand-success/5 rounded-full blur-[160px]"></div>
+      {/* BACKGROUND DECORATIVE GLOW SPHERES (LIQUID PHYSICS ENGINE) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 select-none">
+        {/* Shifting fluid liquid elements */}
+        <div className="absolute top-[-25%] left-[-15%] w-[75%] h-[60%] bg-gradient-to-br from-brand-primary/15 to-brand-secondary/5 rounded-full blur-[110px] animate-liquid-wobble"></div>
+        <div className="absolute bottom-[-15%] right-[-15%] w-[85%] h-[65%] bg-gradient-to-tl from-brand-secondary/15 to-brand-primary/5 rounded-full blur-[130px] animate-liquid-wobble-delayed"></div>
+        <div className="absolute top-[35%] left-[5%] w-[45%] h-[40%] bg-indigo-500/8 rounded-full blur-[100px] animate-liquid-wobble"></div>
+        <div className="absolute top-[60%] right-[10%] w-[40%] h-[40%] bg-emerald-500/8 rounded-full blur-[120px] animate-liquid-wobble-delayed"></div>
+        
+        {/* Tiny twinkling ambient stars/dust */}
+        <div className="absolute top-1/4 left-1/3 w-1.5 h-1.5 rounded-full bg-white/25 blur-[0.5px] animate-pulse"></div>
+        <div className="absolute top-2/3 left-2/4 w-2 h-2 rounded-full bg-purple-400/30 blur-[1px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/3 left-3/4 w-1 h-1 rounded-full bg-blue-300/40 blur-[0.5px] animate-pulse" style={{ animationDelay: '4.5s' }}></div>
       </div>
 
       {/* HEADER NAVIGATION */}
-      <nav className="relative z-30 sticky top-0 backdrop-blur-md bg-brand-bg/75 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+      <nav className="relative z-30 sticky top-4 mx-6 my-4 backdrop-blur-xl bg-[#030409]/60 border border-white/10 px-6 py-3.5 flex items-center justify-between rounded-2xl shadow-xl shadow-black/30">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('home')}>
           {/* Logo merged letter T and upward white arrow */}
-          <div className="w-10 h-10 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-xl flex items-center justify-center shadow-lg shadow-brand-primary/10">
-            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+          <div className="w-9 h-9 bg-gradient-to-tr from-brand-primary to-brand-secondary rounded-xl flex items-center justify-center shadow-lg shadow-brand-primary/25">
+            <svg className="w-5.5 h-5.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
               <path d="M12 4v16m0 0l-4-4m4 4l4-4M4 8h16" />
             </svg>
           </div>
-          <span className="text-xl font-bold tracking-tighter font-display uppercase">
+          <span className="text-lg font-extrabold tracking-tighter font-display uppercase">
             TALENT<span className="text-brand-primary">UP</span>
           </span>
         </div>
 
         {/* Tab Links */}
-        <div className="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-[#A5B4C7]">
+        <div className="hidden md:flex items-center gap-1.5 p-1 bg-white/[0.02] border border-white/5 rounded-xl">
           <button 
             onClick={() => setActiveTab('home')} 
-            className={`hover:text-white transition-colors ${activeTab === 'home' ? 'text-white' : ''}`}
+            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+              activeTab === 'home' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
+            }`}
           >
             Ecosystem
           </button>
           <button 
             onClick={() => setActiveTab('jobs')} 
-            className={`hover:text-white transition-colors ${activeTab === 'jobs' ? 'text-white' : ''}`}
+            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+              activeTab === 'jobs' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
+            }`}
           >
             Marketplace
           </button>
           <button 
             onClick={() => setActiveTab('analyzer')} 
-            className={`hover:text-white transition-colors ${activeTab === 'analyzer' ? 'text-white' : ''}`}
+            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+              activeTab === 'analyzer' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
+            }`}
           >
             AI Consulting
           </button>
           {user && (
             <button 
               onClick={() => setActiveTab('dashboard')} 
-              className={`hover:text-white transition-colors ${activeTab === 'dashboard' ? 'text-white' : ''}`}
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+                activeTab === 'dashboard' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
+              }`}
             >
               Dashboard
             </button>
           )}
           <button 
             onClick={() => setActiveTab('contact')} 
-            className={`hover:text-white transition-colors ${activeTab === 'contact' ? 'text-white' : ''}`}
+            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+              activeTab === 'contact' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
+            }`}
           >
             Contact
           </button>
