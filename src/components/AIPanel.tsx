@@ -9,6 +9,41 @@ interface AIPanelProps {
   onUpdateResumeAnalysis?: (result: ResumeAnalysisResult) => void;
 }
 
+interface CountUpProps {
+  value: number;
+  duration?: number;
+}
+
+function AnimatedCount({ value, duration = 1000 }: CountUpProps) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTime: number | null = null;
+    const endValue = value;
+    const startValue = 0;
+
+    const animateCount = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = timestamp - startTime;
+      const percentage = Math.min(progress / duration, 1);
+      
+      const easePercentage = 1 - Math.pow(1 - percentage, 3); // cubic ease out
+      const currentCount = Math.round(startValue + (endValue - startValue) * easePercentage);
+      
+      setCount(currentCount);
+
+      if (percentage < 1) {
+        requestAnimationFrame(animateCount);
+      }
+    };
+
+    const animId = requestAnimationFrame(animateCount);
+    return () => cancelAnimationFrame(animId);
+  }, [value, duration]);
+
+  return <>{count}</>;
+}
+
 export default function AIPanel({ onNotify, resumeAnalysis, onUpdateResumeAnalysis }: AIPanelProps) {
   // Resume Analyzer States
   const [resumeText, setResumeText] = useState(defaultResumeTemplate);
@@ -397,23 +432,33 @@ B.S. in Computer Science - Stanford Academic Division`;
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                 <div className="bg-brand-elevated/40 p-4 rounded-xl border border-white/5 text-center">
                   <span className="text-[10px] text-brand-muted uppercase block mb-1">Overall Score</span>
-                  <span className="text-2xl font-bold text-white font-mono">{analysisResult.overallScore}</span>
+                  <span className="text-2xl font-bold text-white font-mono">
+                    <AnimatedCount value={analysisResult.overallScore} />
+                  </span>
                 </div>
                 <div className="bg-brand-elevated/40 p-4 rounded-xl border border-white/5 text-center">
                   <span className="text-[10px] text-brand-muted uppercase block mb-1">ATS Match</span>
-                  <span className="text-2xl font-bold text-brand-primary font-mono">{analysisResult.atsScore}%</span>
+                  <span className="text-2xl font-bold text-brand-primary font-mono">
+                    <AnimatedCount value={analysisResult.atsScore} />%
+                  </span>
                 </div>
                 <div className="bg-brand-elevated/40 p-4 rounded-xl border border-white/5 text-center">
                   <span className="text-[10px] text-brand-muted uppercase block mb-1">Keyword Score</span>
-                  <span className="text-2xl font-bold text-brand-secondary font-mono">{analysisResult.keywordMatchScore}%</span>
+                  <span className="text-2xl font-bold text-brand-secondary font-mono">
+                    <AnimatedCount value={analysisResult.keywordMatchScore} />%
+                  </span>
                 </div>
                 <div className="bg-brand-elevated/40 p-4 rounded-xl border border-white/5 text-center">
                   <span className="text-[10px] text-brand-muted uppercase block mb-1">Readability</span>
-                  <span className="text-2xl font-bold text-brand-success font-mono">{analysisResult.readabilityScore}%</span>
+                  <span className="text-2xl font-bold text-brand-success font-mono">
+                    <AnimatedCount value={analysisResult.readabilityScore} />%
+                  </span>
                 </div>
                 <div className="bg-brand-elevated/40 p-4 rounded-xl border border-white/5 text-center col-span-2 sm:col-span-1">
                   <span className="text-[10px] text-brand-muted uppercase block mb-1">Formatting</span>
-                  <span className="text-2xl font-bold text-brand-warning font-mono">{analysisResult.formattingScore}%</span>
+                  <span className="text-2xl font-bold text-brand-warning font-mono">
+                    <AnimatedCount value={analysisResult.formattingScore} />%
+                  </span>
                 </div>
               </div>
 

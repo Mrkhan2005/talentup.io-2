@@ -13,10 +13,12 @@ import JobSearch from './components/JobSearch';
 import Dashboard from './components/Dashboard';
 import LegalContact from './components/LegalContact';
 import Apply4UAgent from './components/Apply4UAgent';
+import AboutUs from './components/AboutUs';
+import ScrollReveal from './components/ScrollReveal';
 
 export default function App() {
   // Navigation State
-  const [activeTab, setActiveTab] = useState<'home' | 'analyzer' | 'jobs' | 'dashboard' | 'contact' | 'apply4u'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'analyzer' | 'jobs' | 'dashboard' | 'contact' | 'apply4u' | 'about'>('home');
   
   // Auth state defaults to Sarah Jenkins (Seeker) for instant high fidelity data
   const [user, setUser] = useState<UserType | null>({
@@ -383,6 +385,14 @@ export default function App() {
             </button>
           )}
           <button 
+            onClick={() => setActiveTab('about')} 
+            className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
+              activeTab === 'about' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
+            }`}
+          >
+            About Us
+          </button>
+          <button 
             onClick={() => setActiveTab('contact')} 
             className={`px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-all ${
               activeTab === 'contact' ? 'liquid-nav-btn-active' : 'liquid-nav-btn text-brand-muted hover:text-white'
@@ -596,6 +606,7 @@ export default function App() {
             </section>
 
             {/* SERVICES MATRIX GRIDS */}
+            <ScrollReveal direction="up" delay={0.1}>
             <section className="space-y-10">
               <div className="text-center max-w-2xl mx-auto space-y-4">
                 <span className="text-xs text-brand-primary uppercase font-mono tracking-widest font-bold">Comprehensive Capabilities Spectrum</span>
@@ -658,85 +669,90 @@ export default function App() {
               </div>
 
               {/* APPLY4U AUTOMATION INTEGRATED SPOTLIGHT CARD */}
-              <div className="bg-gradient-to-r from-[#170F2C]/70 via-[#0C1221]/80 to-[#101F2F]/70 border border-brand-primary/20 p-8 rounded-3xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 backdrop-blur-xl">
-                <div className="absolute top-0 right-0 w-44 h-44 bg-brand-primary/15 rounded-full blur-3xl"></div>
-                
-                <div className="space-y-4 max-w-xl text-left">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-gradient-to-r from-brand-primary/20 to-brand-secondary/20 border border-brand-primary/30 rounded-full text-[9px] font-mono font-bold text-white uppercase tracking-wider">
-                    <Sparkles className="w-3 h-3 text-cyan-400 shrink-0" />
-                    APPLY4U INTEGRATED ENGINE
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
-                    Don’t Search For Jobs. <br/>Let Us Apply <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#10B981]">On Your Behalf</span>.
-                  </h3>
-                  <p className="text-xs text-brand-muted leading-relaxed">
-                    Tired of repetitive resumes uploads and 50-step question sets? Meet our deep-seated automation assistant. We analyze, optimize your structure, and submit directly to our partner network automatically.
-                  </p>
+              <ScrollReveal direction="left" delay={0.15}>
+                <div className="bg-gradient-to-r from-[#170F2C]/70 via-[#0C1221]/80 to-[#101F2F]/70 border border-brand-primary/20 p-8 rounded-3xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8 backdrop-blur-xl">
+                  <div className="absolute top-0 right-0 w-44 h-44 bg-brand-primary/15 rounded-full blur-3xl"></div>
+                  
+                  <div className="space-y-4 max-w-xl text-left">
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-gradient-to-r from-brand-primary/20 to-brand-secondary/20 border border-brand-primary/30 rounded-full text-[9px] font-mono font-bold text-white uppercase tracking-wider">
+                      <Sparkles className="w-3 h-3 text-cyan-400 shrink-0" />
+                      APPLY4U INTEGRATED ENGINE
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-display">
+                      Don’t Search For Jobs. <br/>Let Us Apply <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B5CF6] to-[#10B981]">On Your Behalf</span>.
+                    </h3>
+                    <p className="text-xs text-brand-muted leading-relaxed">
+                      Tired of repetitive resumes uploads and 50-step question sets? Meet our deep-seated automation assistant. We analyze, optimize your structure, and submit directly to our partner network automatically.
+                    </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px] font-medium text-brand-muted font-sans">
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Restructures CV Into Vetted Formats
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px] font-medium text-brand-muted font-sans">
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Restructures CV Into Vetted Formats
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Automatically Target Title & Location
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0" /> 24/7 Background Submission Sprints
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Real-time Tracking & Interview Alerting
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Automatically Target Title & Location
+                  </div>
+
+                  <div className="shrink-0 flex flex-col items-center gap-3 bg-[#050816]/50 border border-white/5 p-6 rounded-2xl min-w-[260px]">
+                    <div className="text-center">
+                      <span className="text-[9px] uppercase font-mono tracking-wider text-brand-muted font-bold block">Estimated SLA Match Lift</span>
+                      <span className="text-4xl font-extrabold text-emerald-400 font-mono tracking-tight block mt-0.5">3.4x</span>
+                      <span className="text-[10px] text-brand-muted mt-1 block">Accelerated application cycle</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> 24/7 Background Submission Sprints
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0" /> Real-time Tracking & Interview Alerting
-                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('apply4u')}
+                      className="w-full mt-2 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-95 text-white font-sans font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-brand-primary/15 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                    >
+                      Activate Smart Apply Now <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
-
-                <div className="shrink-0 flex flex-col items-center gap-3 bg-[#050816]/50 border border-white/5 p-6 rounded-2xl min-w-[260px]">
-                  <div className="text-center">
-                    <span className="text-[9px] uppercase font-mono tracking-wider text-brand-muted font-bold block">Estimated SLA Match Lift</span>
-                    <span className="text-4xl font-extrabold text-emerald-400 font-mono tracking-tight block mt-0.5">3.4x</span>
-                    <span className="text-[10px] text-brand-muted mt-1 block">Accelerated application cycle</span>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('apply4u')}
-                    className="w-full mt-2 py-3 bg-gradient-to-r from-[#8B5CF6] to-[#3B82F6] hover:opacity-95 text-white font-sans font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-brand-primary/15 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
-                  >
-                    Activate Smart Apply Now <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
+              </ScrollReveal>
             </section>
+            </ScrollReveal>
 
             {/* TESTIMONIALS CAROUSEL */}
-            <section className="bg-brand-card/30 border border-white/10 p-8 rounded-3xl relative overflow-hidden space-y-6">
-              <span className="text-xs text-brand-primary uppercase font-mono font-bold tracking-widest text-center block">Ecosystem Reviews</span>
-              
-              <div className="text-center space-y-4 max-w-3xl mx-auto">
-                <p className="text-base sm:text-lg text-white font-serif leading-relaxed italic">
-                  "{testimonials[activeTestimonial].quote}"
-                </p>
+            <ScrollReveal direction="none" scale={0.98} delay={0.1}>
+              <section className="bg-brand-card/30 border border-white/10 p-8 rounded-3xl relative overflow-hidden space-y-6">
+                <span className="text-xs text-brand-primary uppercase font-mono font-bold tracking-widest text-center block">Ecosystem Reviews</span>
                 
-                <div className="flex items-center justify-center gap-3 pt-4">
-                  <img src={testimonials[activeTestimonial].avatar} className="w-10 h-10 rounded-full object-cover" />
-                  <div className="text-left text-xs">
-                    <span className="font-bold text-white block">{testimonials[activeTestimonial].author}</span>
-                    <span className="text-brand-muted block">{testimonials[activeTestimonial].title}</span>
+                <div className="text-center space-y-4 max-w-3xl mx-auto">
+                  <p className="text-base sm:text-lg text-white font-serif leading-relaxed italic">
+                    "{testimonials[activeTestimonial].quote}"
+                  </p>
+                  
+                  <div className="flex items-center justify-center gap-3 pt-4">
+                    <img src={testimonials[activeTestimonial].avatar} className="w-10 h-10 rounded-full object-cover" />
+                    <div className="text-left text-xs">
+                      <span className="font-bold text-white block">{testimonials[activeTestimonial].author}</span>
+                      <span className="text-brand-muted block">{testimonials[activeTestimonial].title}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center gap-2 pt-2">
+                    {testimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setActiveTestimonial(index)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          activeTestimonial === index ? 'bg-brand-primary w-4' : 'bg-white/20'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </div>
-
-                <div className="flex justify-center gap-2 pt-2">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setActiveTestimonial(index)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        activeTestimonial === index ? 'bg-brand-primary w-4' : 'bg-white/20'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </section>
+              </section>
+            </ScrollReveal>
           </div>
         )}
 
@@ -789,6 +805,11 @@ export default function App() {
           <LegalContact />
         )}
 
+        {/* ABOUT US CORNER WITH HIGH END PRESENTATION */}
+        {activeTab === 'about' && (
+          <AboutUs />
+        )}
+
       </main>
 
       {/* FOOTER MATRICES */}
@@ -831,9 +852,10 @@ export default function App() {
           <div>
             <span className="block text-white font-mono uppercase text-[9px] tracking-wider mb-3">Support Protocols</span>
             <ul className="space-y-1.5 text-xs">
-              <li><button onClick={() => setActiveTab('contact')} className="hover:text-white">Help & Frequently Audited Questions</button></li>
-              <li><button onClick={() => setActiveTab('contact')} className="hover:text-white">Submit Slag Inquiries</button></li>
-              <li><button className="hover:text-white cursor-default">Status: Online Node Operational</button></li>
+              <li><button onClick={() => setActiveTab('about')} className="hover:text-white text-left">About talentup.io & Leadership Team</button></li>
+              <li><button onClick={() => setActiveTab('contact')} className="hover:text-white text-left">Help & Frequently Audited Questions</button></li>
+              <li><button onClick={() => setActiveTab('contact')} className="hover:text-white text-left">Submit Slag Inquiries</button></li>
+              <li><button className="hover:text-white cursor-default text-left">Status: Online Node Operational</button></li>
             </ul>
           </div>
         </div>

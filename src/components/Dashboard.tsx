@@ -5,6 +5,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Job, Candidate, Application, ResumeAnalysisResult } from '../types';
 import { sampleCandidates } from '../data';
 import CareerPathSimulator from './CareerPathSimulator';
+import SkillsGapRadar from './SkillsGapRadar';
 
 interface DashboardProps {
   role: 'seeker' | 'employer';
@@ -510,6 +511,9 @@ export default function Dashboard({
                     <div className="text-[10px] text-brand-success">Perfect ATS configuration</div>
                   </div>
                 </div>
+
+                {/* AI SKILLS GAP RADAR CHART */}
+                <SkillsGapRadar resumeAnalysis={resumeAnalysis} profile={profile} />
 
                 {/* Current Application Tracking Matrix */}
                 <div className="glass-panel rounded-2xl p-6 border border-white/10 space-y-6">
