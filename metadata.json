@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "TalentUp",
+  "description": "AI-powered strategic career co-pilot and ATS recruiting optimization pipeline.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

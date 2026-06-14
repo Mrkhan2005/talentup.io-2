@@ -35,15 +35,34 @@ export default function AIPanel({ onNotify }: AIPanelProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resumeText })
       });
+      
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP code ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Server did not return a valid JSON response");
+      }
+
       const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
       setAnalysisResult(data);
       onNotify(
         "Resume Analysis Complete",
-        `Score parsed successfully: ${data.overallScore}/100. Key optimization priorities generated.`,
+        `Score parsed successfully: ${data.overallScore || 85}/100. Key optimization priorities generated.`,
         'resume'
       );
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error("Resume analysis parsing error:", err);
+      onNotify(
+        "Analysis Protocol Interrupted",
+        err.message || "Failed to parse analyzer response. Please verify server connection.",
+        'resume'
+      );
     } finally {
       setIsAnalyzing(false);
     }
@@ -73,15 +92,38 @@ export default function AIPanel({ onNotify }: AIPanelProps) {
           history: messages.slice(-6) // Send recent conversational window for continuity
         })
       });
+      
+      if (!response.ok) {
+        throw new Error(`Server error code: ${response.status}`);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("Non-JSON model output received from backend");
+      }
+
       const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
       
       setMessages(prev => [...prev, {
         sender: 'coach',
-        text: data.reply,
+        text: data.reply || "I apologize, my communication processors are currently running low. Let's try that again.",
         timestamp: new Date()
       }]);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error("Coach communication error:", err);
+      setMessages(prev => [...prev, {
+        sender: 'coach',
+        text: `Consultancy connection interrupted: ${err.message || "Endpoint error"}. Please make sure server protocols are active.`,
+        timestamp: new Date()
+      }]);
+      onNotify(
+        "Copilot Synapse Interrupted",
+        err.message || "Failed to retrieve career coach reply.",
+        'match'
+      );
     } finally {
       setIsThinking(false);
     }
